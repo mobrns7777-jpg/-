@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أسئلة أمن المعلومات</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #000;
+        color: #00f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .quiz-container {
+        background-color: #111;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 30px #00f;
+        max-width: 600px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        transition: transform 0.5s ease;
+    }
+    h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    .option {
+        display: block;
+        background-color: #000;
+        border: 2px solid #00f;
+        color: #00f;
+        padding: 12px;
+        margin: 12px 0;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 18px;
+        text-align: center;
+    }
+    .option:hover {
+        background-color: #00f;
+        color: #000;
+        box-shadow: 0 0 15px #00f;
+        transform: scale(1.05);
+    }
+    .feedback {
+        margin-top: 15px;
+        font-size: 22px;
+        font-weight: bold;
+        min-height: 28px;
+    }
+</style>
+</head>
+<body>
+
+<div class="quiz-container" id="quiz-container">
+    <h2 id="question">السؤال سيظهر هنا</h2>
+    <div id="options"></div>
+    <div class="feedback" id="feedback"></div>
+</div>
+
+<script>
+const quiz = [
+    {
+        question: "أيٌّ من الآتي يُعَدُّ من التهديدات غير المقصودة في أمن المعلومات؟",
+        options: ["الفيروسات", "التجسس الإلكتروني", "خطأ المستخدم أثناء إدخال البيانات", "الهجمات الموجهة"],
+        answer: 2
+    },
+    {
+        question: "من أمثلة التهديدات المادية لأمن المعلومات:",
+        options: ["انتحال الهوية", "انقطاع التيار الكهربائي", "سرقة كلمات المرور", "البرمجيات الخبيثة"],
+        answer: 1
+    },
+    {
+        question: "أيٌّ من التدابير التالية يُعَدُّ إجراءً وقائيًا تقنيًا؟",
+        options: ["تدريب الموظفين على الأمن", "إنشاء نسخ احتياطية للبيانات", "وضع سياسات استخدام الأجهزة", "تنظيم حملات توعية أمنية"],
+        answer: 1
+    },
+    {
+        question: "ما الهدف الأساسي من تطبيق التدابير المضادة؟",
+        options: ["زيادة سرعة النظام", "منع التهديدات الأمنية أو تقليل آثارها", "مراقبة أداء الشبكة فقط", "تقليل تكاليف التشغيل"],
+        answer: 1
+    },
+    {
+        question: "أيٌّ من التالي يُعَدّ تهديدًا منطقيًا (Logical Threat)؟",
+        options: ["الحريق", "الفيضانات", "الفيروسات والبرمجيات الخبيثة", "سرقة الأجهزة"],
+        answer: 2
+    }
+];
+
+let currentQuestion = 0;
+
+function loadQuestion() {
+    const container = document.getElementById("quiz-container");
+    container.style.transform = "translateX(-100%)";
+
+    setTimeout(() => {
+        const q = quiz[currentQuestion];
+        document.getElementById("question").textContent = q.question;
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
+        document.getElementById("feedback").textContent = "";
+
+        q.options.forEach((option, index) => {
+            const button = document.createElement("button");
+            button.textContent = option;
+            button.classList.add("option");
+            button.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(button);
+        });
+
+        container.style.transform = "translateX(0)";
+    }, 300);
+}
+
+function checkAnswer(selected) {
+    const q = quiz[currentQuestion];
+    const feedback = document.getElementById("feedback");
+    if (selected === q.answer) {
+        feedback.textContent = "✅ صح";
+        currentQuestion++;
+        if (currentQuestion < quiz.length) {
+            setTimeout(loadQuestion, 800);
+        } else {
+            setTimeout(() => {
+                document.querySelector(".quiz-container").innerHTML = "<h2>🎉 انتهت الأسئلة!</h2>";
+            }, 800);
+        }
+    } else {
+        feedback.textContent = "❌ خطأ";
+    }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
